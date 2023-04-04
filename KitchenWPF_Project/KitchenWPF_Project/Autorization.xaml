@@ -23,7 +23,7 @@
                               <TextBox x:Name="PasswordTB" Height="20"></TextBox>
 
                               <DockPanel Margin="15" Visibility="Hidden" x:Name="CaptchaDP">
-                                        <TextBox x:Name="CaptchaTextBox" IsReadOnly="True" IsEnabled="False" FontFamily="Wide Latin" FontSize="20" FontWeight="Bold"/>
+                                        <TextBox x:Name="CaptchaTextBox" IsReadOnly="True" IsEnabled="False" FontFamily="Wide Latin" FontSize="20" FontWeight="Bold" TextDecorations="Strikethrough"/>
                                         <Label x:Name="CaptchaLabel" FontFamily="Comic Sans MS">CAPTCHA</Label>
                                         <TextBox x:Name="CaptchaCheckTextBox"/>
                               </DockPanel>

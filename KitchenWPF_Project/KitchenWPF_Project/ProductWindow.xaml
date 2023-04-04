@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KitchenWPF_Project"
         mc:Ignorable="d"
-        Title="ProductWindow" Height="450" Width="800">
+        Title="ProductWindow" Height="700" Width="1000">
           <Grid>
                     <Grid.ColumnDefinitions>
                               <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                              <RowDefinition Height="85"></RowDefinition>
+                              <RowDefinition Height="140"></RowDefinition>
                               <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
 
@@ -21,6 +21,39 @@
                                         <Label FontFamily="Comic Sans MS" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Right">Вы вошли как гость</Label>
                               </DockPanel>
                               <Button x:Name="BackAuthButton" Width="50" Height="25" Background="#76e383" HorizontalAlignment="Right" Click="BackAuthButton_Click">Выйти</Button>
+                              <DockPanel x:Name="SearchDP" HorizontalAlignment="Center">
+                                        <Label FontFamily="Comic Sans MS">Поиск товаров:</Label>
+                                        <TextBox x:Name="SearchTextBox" Width="200" TextChanged="SearchTextBox_TextChanged"></TextBox>
+                              </DockPanel>
                     </StackPanel>
+
+                    <ListBox x:Name="ProductListBox" HorizontalAlignment="Center" Width="800" Grid.Row="1" Grid.Column="0">
+                              <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                                  <DockPanel VerticalAlignment="Center" HorizontalAlignment="Center" Background="#498c51" Width="760">
+                                                            <StackPanel Orientation="Vertical">
+                                                                      <Label FontFamily="Comic Sans MS" Content="{Binding ProductName}" FontSize="18" />
+                                                                      <DockPanel>
+                                                                                <Label FontFamily="Comic Sans MS" Content="Описание товара: " FontSize="14"/>
+                                                                                <Label FontFamily="Comic Sans MS" x:Name="ProdName" FontSize="14" Content="{Binding ProductDescription}"/>
+                                                                      </DockPanel>
+                                                                      <DockPanel>
+                                                                                <Label FontFamily="Comic Sans MS" Content="Производитель: " FontSize="14"/>
+                                                                                <Label FontFamily="Comic Sans MS" x:Name="Manufact" FontSize="14" Content="{Binding ProductManufacturer}"/>
+                                                                      </DockPanel>
+                                                                      <DockPanel>
+                                                                                <Label FontFamily="Comic Sans MS" Content="Цена: " FontSize="14"/>
+                                                                                <Label FontFamily="Comic Sans MS" x:Name="Cost" FontSize="14" Content="{Binding ProductCost}"/>
+                                                                      </DockPanel>
+                                                            </StackPanel>
+                                                            <DockPanel HorizontalAlignment="Right">
+                                                                      <Label Content="Количество: " FontSize="14" HorizontalAlignment="Right"/>
+                                                                      <Label x:Name="Quantity" FontSize="14" Content="{Binding ProductQuantityInStock}"/>
+                                                            </DockPanel>
+                                                  </DockPanel>
+
+                                        </DataTemplate>
+                              </ItemsControl.ItemTemplate>
+                    </ListBox>
           </Grid>
 </Window>

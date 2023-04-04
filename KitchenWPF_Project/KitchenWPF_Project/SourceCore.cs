@@ -9,6 +9,6 @@ namespace KitchenWPF_Project
 {
     class SourceCore
     {
-        public static BaseKitchenEntities MyBase = new BaseKitchenEntities();
+        public static BaseKitchenEntities2 MyBase = new BaseKitchenEntities2();
     }
 }

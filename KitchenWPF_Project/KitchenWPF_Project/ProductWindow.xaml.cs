@@ -22,6 +22,7 @@ namespace KitchenWPF_Project
         public ProductWindow()
         {
             InitializeComponent();
+            ProductListBox.ItemsSource = SourceCore.MyBase.Product.ToList();
         }
 
         private void SelectAuthWindow()
@@ -34,6 +35,18 @@ namespace KitchenWPF_Project
         private void BackAuthButton_Click(object sender, RoutedEventArgs e)
         {
             SelectAuthWindow();
+        }
+
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var textbox = sender as TextBox;
+            ProductListBox.ItemsSource = SourceCore.MyBase.Product.Where(
+                q => q.ProductName.ToString().Contains(textbox.Text) ||
+                q.ProductDescription.ToString().Contains(textbox.Text) ||
+                q.ProductManufacturer.ToString().Contains(textbox.Text) ||
+                q.ProductCost.ToString().Contains(textbox.Text) ||
+                q.ProductQuantityInStock.ToString().Contains(textbox.Text)
+                ).ToList();
         }
     }
 }

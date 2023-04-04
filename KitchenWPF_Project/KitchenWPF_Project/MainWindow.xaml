@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KitchenWPF_Project"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="700" Width="1000">
           <Grid>
                     <Grid.ColumnDefinitions>
                               <ColumnDefinition Width="*"></ColumnDefinition>
+                              <ColumnDefinition x:Name="ColumnChange" Width="0"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                              <RowDefinition Height="85"></RowDefinition>
+                              <RowDefinition Height="140"></RowDefinition>
                               <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
 
@@ -21,30 +22,84 @@
                                         <Label FontFamily="Comic Sans MS" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Right" x:Name="NameLabel">Вы вошли как гость</Label>
                               </DockPanel>
                               <Button x:Name="BackAuthButton" Width="50" Height="25" Background="#76e383" HorizontalAlignment="Right" Click="BackAuthButton_Click">Выйти</Button>
+                              <DockPanel x:Name="SearchDP" HorizontalAlignment="Center">
+                                        <Label FontFamily="Comic Sans MS">Поиск товаров:</Label>
+                                        <TextBox x:Name="SearchTextBox" Width="200" TextChanged="SearchTextBox_TextChanged"></TextBox>
+                              </DockPanel>
+                              <DockPanel x:Name="AdminDP">
+                                        <Button x:Name="RecordAdd" Height="25" Background="#76e383" Margin="5" Click="RecordAdd_Click">Добавить</Button>
+                                        <Button x:Name="RecordDellete" Height="25" Background="#76e383" Margin="5" Click="RecordEdit_Click">Редактировать</Button>
+                                        <Button x:Name="RecordEdit" Height="25" Background="#76e383" Margin="5" Click="RecordDellete_Click">Удалить</Button>
+                                        <Label></Label>
+                              </DockPanel>
+                    </StackPanel>
+                    <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Vertical">
+
+                              <Label x:Name="RecordLabel" Content="Добавить Запись" FontSize="16" FontWeight="Medium" Margin="5,0,0,10" Foreground="#000"/>
+
+                              <Label Content="Артикль" Margin="5,0,0,0" Foreground="#000"/>
+                              <TextBox x:Name="RecordTextArticle" 
+                              Height="35" Margin="20,0,20,0" IsReadOnly="True" IsEnabled="False"/>
+
+                              <Label Content="Наименование" Margin="5,0,0,0" Foreground="#000"/>
+                              <TextBox x:Name="RecordTextName" 
+                              Height="35" Margin="20,0,20,0"/>
+
+                              <Label Content="Категория" Margin="5,0,0,0" Foreground="#000"/>
+                              <ComboBox x:Name="TypeComboBox" Height="35" Margin="20,0,20,0"/>
+
+                              <Label Content="Количество" Margin="5,0,0,0" Foreground="#000"/>
+                              <TextBox x:Name="RecordTextQuantity" 
+                              Height="35" Margin="20,0,20,0"/>
+
+                              <Label Content="Поставщик" Margin="5,0,0,0" Foreground="#000"/>
+                              <TextBox x:Name="RecordTextManufacturer" 
+                              Height="35" Margin="20,0,20,0"/>
+
+                              <Label Content="Стоимость за 1 ед." Margin="5,0,0,0" Foreground="#000"/>
+                              <TextBox x:Name="RecordTextPrice" 
+                              Height="35" Margin="20,0,20,0"/>
+
+                              <Label Content="Подробное описание" Margin="5,0,0,0" Foreground="#000"/>
+                              <TextBox x:Name="RecordTextDescription" 
+                              Height="35" Margin="20,0,20,0"/>
+
+                              <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
+                                        <Button x:Name="AddCommit" Content="Добавить запись" 
+                     Margin="0, 5, 20, 0" Click="AddCommit_Click"/>
+                                        <Button x:Name="AddRollback" Content="Отменить" 
+                     Margin="0, 5, 0, 0" Click="AddRollback_Click"/>
+                              </StackPanel>
+
                     </StackPanel>
 
-                    <StackPanel Margin="10" x:Name="ProductsSP" Grid.Row="1">
-                              <ListView x:Name="ProductsLV">
-                                        <ListView.View>
-                                                  <GridView>
-                                                            <GridViewColumn Header="Фото" Width="200">
-                                                                      <GridViewColumn.CellTemplate>
-                                                                                <DataTemplate>
-                                                                                          <Image Source="{Binding Path=Image}"/>
-                                                                                </DataTemplate>
-                                                                      </GridViewColumn.CellTemplate>
-                                                            </GridViewColumn>
-                                                            <GridViewColumn Header="Наименование товара">
-                                                                      <GridViewColumn.CellTemplate>
-                                                                                <DataTemplate>
-                                                                                          <!-- код для описания https://ru.stackoverflow.com/questions/1259938/Вывод-из-базы-данных-в-listview-wpf-->
-                                                                                </DataTemplate>
-                                                                      </GridViewColumn.CellTemplate>
-                                                            </GridViewColumn>
-                                                            <GridViewColumn DisplayMemberBinding="{Binding Path=Surname}" Header="Наличие на складе"/>
-                                                  </GridView>
-                                        </ListView.View>
-                              </ListView>
-                    </StackPanel>
+                    <ListBox x:Name="ProductListBox" HorizontalAlignment="Center" Width="800" Grid.Row="1" Grid.Column="0">
+                              <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                                  <DockPanel VerticalAlignment="Center" HorizontalAlignment="Center" Background="#498c51" Width="760">
+                                                            <StackPanel Orientation="Vertical">
+                                                                      <Label FontFamily="Comic Sans MS" Content="{Binding ProductName}" FontSize="18" />
+                                                                      <DockPanel>
+                                                                                <Label FontFamily="Comic Sans MS" Content="Описание товара: " FontSize="14"/>
+                                                                                <Label FontFamily="Comic Sans MS" x:Name="ProdName" FontSize="14" Content="{Binding ProductDescription}"/>
+                                                                      </DockPanel>
+                                                                      <DockPanel>
+                                                                                <Label FontFamily="Comic Sans MS" Content="Производитель: " FontSize="14"/>
+                                                                                <Label FontFamily="Comic Sans MS" x:Name="Manufact" FontSize="14" Content="{Binding ProductManufacturer}"/>
+                                                                      </DockPanel>
+                                                                      <DockPanel>
+                                                                                <Label FontFamily="Comic Sans MS" Content="Цена: " FontSize="14"/>
+                                                                                <Label FontFamily="Comic Sans MS" x:Name="Cost" FontSize="14" Content="{Binding ProductCost}"/>
+                                                                      </DockPanel>
+                                                            </StackPanel>
+                                                            <DockPanel HorizontalAlignment="Right">
+                                                                      <Label Content="Количество: " FontSize="14" HorizontalAlignment="Right"/>
+                                                                      <Label x:Name="Quantity" FontSize="14" Content="{Binding ProductQuantityInStock}"/>
+                                                            </DockPanel>
+                                                  </DockPanel>
+
+                                        </DataTemplate>
+                              </ItemsControl.ItemTemplate>
+                    </ListBox>
           </Grid>
 </Window>
