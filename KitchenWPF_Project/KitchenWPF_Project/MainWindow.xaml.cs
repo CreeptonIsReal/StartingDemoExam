@@ -207,7 +207,6 @@ namespace KitchenWPF_Project
                 NewBase.ProductDescription = RecordTextDescription.Text;
                 SourceCore.MyBase.Product.Add(NewBase);
                 SelectedItem = NewBase;
-                CountUpdate();
             }
             else
             {
@@ -220,11 +219,12 @@ namespace KitchenWPF_Project
                 EditBase.ProductManufacturer = RecordTextManufacturer.Text;
                 EditBase.ProductCost = Convert.ToDecimal(RecordTextPrice.Text);
                 EditBase.ProductDescription = RecordTextDescription.Text;
-                CountUpdate();
+
             }
 
             try
             {
+                CountRecord = ProductListBox.Items.Count;
                 CountUpdate();
                 SourceCore.MyBase.SaveChanges();
                 UpdateGrid(SelectedItem);
@@ -320,7 +320,6 @@ namespace KitchenWPF_Project
                 p.ProductManufacturer.Contains(ManufacturerComboBox.SelectedItem.ToString()));
                 CountUpdate();
             }
-
         }
 
         private void ManufacturerComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
