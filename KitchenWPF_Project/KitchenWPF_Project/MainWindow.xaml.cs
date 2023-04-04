@@ -24,10 +24,13 @@ namespace KitchenWPF_Project
     public partial class MainWindow : Window
     {
         public static Base.User User = null;
+        public static bool _guest;
         public static Base.Product Product = null;
         private int DlgMode = 0;
         public Base.Product SelectedItem;
         public ObservableCollection<Base.Product> Products;
+        private int CountRecord;
+        private string[] manufacturers = { "Все производители", "Davinci", "Attribute", "Doria", "Alaska", "Apollo", "Smart Home", "Mayer & Boch" };
         public MainWindow()
         {
             InitializeComponent();
@@ -35,6 +38,8 @@ namespace KitchenWPF_Project
             UpdateGrid(null);
             DlgLoad(false, "");
             ProductListBox.ItemsSource = SourceCore.MyBase.Product.ToList();
+            CountRecord = ProductListBox.Items.Count;
+
             FillData();
 
         }
@@ -67,23 +72,33 @@ namespace KitchenWPF_Project
 
         private void FillData()
         {
-            string fio_user = "Вы вошли как гость";
-            fio_user = User.UserName + " " + User.UserSurname + " " + User.UserPatronymic + " ";
-            NameLabel.Content = "Добро пожаловать, " + fio_user;
-
-            if (User.UserRole == 1)
-            {
-                AdminDP.Visibility = Visibility.Visible;
-            }
-            else 
+            if (_guest)
             {
                 AdminDP.Visibility = Visibility.Hidden;
             }
+            else 
+            {
+                string fio_user = "Вы вошли как гость";
+                fio_user = User.UserName + " " + User.UserSurname + " " + User.UserPatronymic + " ";
+                NameLabel.Content = "Добро пожаловать, " + fio_user;
+                if (User.UserRole == 1)
+                {
+                    AdminDP.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    AdminDP.Visibility = Visibility.Hidden;
+                }
+            }
+
 
             TypeComboBox.Items.Insert(0, "Вилки");
             TypeComboBox.Items.Insert(1, "Ложки");
             TypeComboBox.Items.Insert(2, "Наборы");
             TypeComboBox.Items.Insert(3, "Ножи");
+
+            ManufacturerComboBox.SelectedItem = manufacturers[0];
+            ManufacturerComboBox.ItemsSource = manufacturers;
         }
 
         public void UpdateGrid(Base.Product Product)
@@ -95,6 +110,7 @@ namespace KitchenWPF_Project
             Products = new ObservableCollection<Base.Product>(SourceCore.MyBase.Product);
             ProductListBox.ItemsSource = Products;
             ProductListBox.SelectedItem = Product;
+            CountUpdate();
         }
 
         public void DlgLoad(bool b, string DlgModeContent)
@@ -122,19 +138,15 @@ namespace KitchenWPF_Project
 
         private void BackAuthButton_Click(object sender, RoutedEventArgs e)
         {
+            CountUpdate();
             SelectAuthWindow();
         }
 
+
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var textbox = sender as TextBox;
-            ProductListBox.ItemsSource = SourceCore.MyBase.Product.Where(
-                q => q.ProductName.ToString().Contains(textbox.Text) || 
-                q.ProductDescription.ToString().Contains(textbox.Text) ||
-                q.ProductManufacturer.ToString().Contains(textbox.Text) ||
-                q.ProductCost.ToString().Contains(textbox.Text) ||
-                q.ProductQuantityInStock.ToString().Contains(textbox.Text)
-                ).ToList();
+            CountUpdate();
+            FilterProducts();
         }
 
         private void RecordAdd_Click(object sender, RoutedEventArgs e)
@@ -143,6 +155,12 @@ namespace KitchenWPF_Project
             DlgLoad(true, "Добавить");
             DataContext = null;
             DlgMode = 0;
+            CountRecord = ProductListBox.Items.Count;
+            CountUpdate();
+        }
+        private void CountUpdate()
+        {
+            CountLabel.Content = ProductListBox.Items.Count + "/" + CountRecord;
         }
 
         private void AddCommit_Click(object sender, RoutedEventArgs e)
@@ -189,6 +207,7 @@ namespace KitchenWPF_Project
                 NewBase.ProductDescription = RecordTextDescription.Text;
                 SourceCore.MyBase.Product.Add(NewBase);
                 SelectedItem = NewBase;
+                CountUpdate();
             }
             else
             {
@@ -201,10 +220,12 @@ namespace KitchenWPF_Project
                 EditBase.ProductManufacturer = RecordTextManufacturer.Text;
                 EditBase.ProductCost = Convert.ToDecimal(RecordTextPrice.Text);
                 EditBase.ProductDescription = RecordTextDescription.Text;
+                CountUpdate();
             }
 
             try
             {
+                CountUpdate();
                 SourceCore.MyBase.SaveChanges();
                 UpdateGrid(SelectedItem);
                 DlgLoad(false, "");
@@ -220,6 +241,8 @@ namespace KitchenWPF_Project
         {
             UpdateGrid(SelectedItem);
             DlgLoad(false, "");
+            CountUpdate();
+            CountRecord = ProductListBox.Items.Count;
         }
 
         private void RecordEdit_Click(object sender, RoutedEventArgs e)
@@ -234,6 +257,7 @@ namespace KitchenWPF_Project
                 RecordTextManufacturer.Text = SelectedItem.ProductManufacturer;
                 RecordTextPrice.Text = SelectedItem.ProductCost.ToString();
                 RecordTextDescription.Text = SelectedItem.ProductDescription;
+                CountUpdate();
             }
             else
             {
@@ -274,6 +298,34 @@ namespace KitchenWPF_Project
                     "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.None);
                 }
             }
+        }
+
+        private void FilterProducts()
+        {
+            if (ManufacturerComboBox.SelectedItem.ToString() == manufacturers[0])
+            {
+                ProductListBox.ItemsSource = Products.Where(p => p.ProductName.Contains(SearchTextBox.Text) ||
+                p.ProductName.Contains(SearchTextBox.Text) ||
+                p.ProductCost.ToString().Contains(SearchTextBox.Text) ||
+                p.ProductManufacturer.Contains(SearchTextBox.Text) ||
+                p.ProductQuantityInStock.ToString().Contains(SearchTextBox.Text));
+                CountUpdate();
+            }
+            else
+            {
+                ProductListBox.ItemsSource = Products.Where(p => (p.ProductName.Contains(SearchTextBox.Text) ||
+                p.ProductName.Contains(SearchTextBox.Text) ||
+                p.ProductCost.ToString().Contains(SearchTextBox.Text) ||
+                p.ProductQuantityInStock.ToString().Contains(SearchTextBox.Text)) &&
+                p.ProductManufacturer.Contains(ManufacturerComboBox.SelectedItem.ToString()));
+                CountUpdate();
+            }
+
+        }
+
+        private void ManufacturerComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            FilterProducts();
         }
     }
 }

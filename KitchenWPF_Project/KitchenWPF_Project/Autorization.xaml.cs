@@ -24,7 +24,7 @@ namespace KitchenWPF_Project
     /// </summary>
     public partial class Autorization : Window
     {
-        private bool CaptchaFlag = true;
+        private bool _captchaFlag = true;
         private int i = 0;
         private readonly object _userActivityLocker = new object();
 
@@ -84,7 +84,8 @@ namespace KitchenWPF_Project
 
         private void GuestButton_Click(object sender, RoutedEventArgs e)
         {
-            SelectProductWindow();
+            MainWindow._guest = true;
+            SelectMainWindow();
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
@@ -92,8 +93,9 @@ namespace KitchenWPF_Project
             Base.User User = SourceCore.MyBase.User.SingleOrDefault(U => U.UserLogin == LoginTB.Text && U.UserPassword == PasswordTB.Text);
             if (User != null)
             {
-                if (CheckCAPTCHA(CaptchaFlag) || i == 0 )
+                if (CheckCAPTCHA(_captchaFlag) || i == 0 )
                 {
+                    MainWindow._guest = false;
                     MainWindow.User = User;
                     SelectMainWindow();
                 }

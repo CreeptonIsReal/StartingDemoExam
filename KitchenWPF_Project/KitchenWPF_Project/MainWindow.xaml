@@ -12,7 +12,7 @@
                               <ColumnDefinition x:Name="ColumnChange" Width="0"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                              <RowDefinition Height="140"></RowDefinition>
+                              <RowDefinition Height="150"></RowDefinition>
                               <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
 
@@ -25,6 +25,12 @@
                               <DockPanel x:Name="SearchDP" HorizontalAlignment="Center">
                                         <Label FontFamily="Comic Sans MS">Поиск товаров:</Label>
                                         <TextBox x:Name="SearchTextBox" Width="200" TextChanged="SearchTextBox_TextChanged"></TextBox>
+
+                                        <Label FontFamily="Comic Sans MS">Фильтрация по производителю:</Label>
+                                        <ComboBox x:Name="ManufacturerComboBox" SelectionChanged="ManufacturerComboBox_SelectionChanged"/>
+
+                                        <Label x:Name="CountLabel" FontSize="16" HorizontalAlignment="Center">0/0</Label>
+                                        
                               </DockPanel>
                               <DockPanel x:Name="AdminDP">
                                         <Button x:Name="RecordAdd" Height="25" Background="#76e383" Margin="5" Click="RecordAdd_Click">Добавить</Button>
@@ -33,7 +39,7 @@
                                         <Label></Label>
                               </DockPanel>
                     </StackPanel>
-                    <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Vertical">
+                    <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Vertical" Background="#76e383">
 
                               <Label x:Name="RecordLabel" Content="Добавить Запись" FontSize="16" FontWeight="Medium" Margin="5,0,0,10" Foreground="#000"/>
 

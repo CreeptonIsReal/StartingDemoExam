@@ -24,6 +24,9 @@
                               <DockPanel x:Name="SearchDP" HorizontalAlignment="Center">
                                         <Label FontFamily="Comic Sans MS">Поиск товаров:</Label>
                                         <TextBox x:Name="SearchTextBox" Width="200" TextChanged="SearchTextBox_TextChanged"></TextBox>
+
+                                        <!--<Label FontFamily="Comic Sans MS">Фильтрация по производителю:</Label>
+                                        <ComboBox x:Name="ManufacturerComboBox" SelectionChanged="ManufacturerComboBox_SelectionChanged"/>-->
                               </DockPanel>
                     </StackPanel>
 

@@ -19,6 +19,7 @@ namespace KitchenWPF_Project
     /// </summary>
     public partial class ProductWindow : Window
     {
+        private string[] manufacturers = { "Все производители", "Davinci", "Attribute", "Doria", "Alaska", "Apollo", "Smart Home", "Mayer & Boch" };
         public ProductWindow()
         {
             InitializeComponent();
@@ -36,6 +37,27 @@ namespace KitchenWPF_Project
         {
             SelectAuthWindow();
         }
+
+        /*private void FilterProducts()
+        {
+            if (ManufacturerComboBox.SelectedItem.ToString() == manufacturers[0])
+            {
+                ProductListBox.ItemsSource = Products.Where(p => p.ProductName.Contains(SearchTextBox.Text) ||
+                p.ProductName.Contains(SearchTextBox.Text) ||
+                p.ProductCost.ToString().Contains(SearchTextBox.Text) ||
+                p.ProductManufacturer.Contains(SearchTextBox.Text) ||
+                p.ProductQuantityInStock.ToString().Contains(SearchTextBox.Text));
+            }
+            else
+            {
+                ProductListBox.ItemsSource = Products.Where(p => (p.ProductName.Contains(SearchTextBox.Text) ||
+                p.ProductName.Contains(SearchTextBox.Text) ||
+                p.ProductCost.ToString().Contains(SearchTextBox.Text) ||
+                p.ProductQuantityInStock.ToString().Contains(SearchTextBox.Text)) &&
+                p.ProductManufacturer.Contains(ManufacturerComboBox.SelectedItem.ToString()));
+            }
+
+        }*/
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
